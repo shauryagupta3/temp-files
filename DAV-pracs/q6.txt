@@ -1,0 +1,58 @@
+and yes
+updated ques 6
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Assuming df is your DataFrame
+# Load your dataset if not already loaded
+df = pd.read_csv("Titanic.csv")
+
+# a. Clean the data by dropping the column which has the largest number of missing values.
+column_with_max_missing = df.isnull().sum().idxmax()
+df_cleaned = df.drop(columns=[column_with_max_missing])
+
+# b. Find total number of passengers with age more than 30
+passengers_age_more_than_30 = df_cleaned[df_cleaned['Age'] > 30]
+total_passengers_age_more_than_30 = len(passengers_age_more_than_30)
+print("Total passengers with age more than 30:", total_passengers_age_more_than_30)
+
+# c. Find total fare paid by passengers of second class
+total_fare_second_class = df_cleaned[df_cleaned['Pclass'] == 2]['Fare'].sum()
+print("Total fare paid by second-class passengers:", total_fare_second_class)
+
+# d. Compare number of survivors of each passenger class
+survivors_by_class = df_cleaned.groupby('Pclass')['Survived'].sum()
+print("Number of survivors by class:\n", survivors_by_class)
+
+# e. Compute descriptive statistics for age attribute gender wise
+descriptive_stats_age_gender = df_cleaned.groupby('Sex')['Age'].describe()
+print("Descriptive statistics for age attribute gender-wise:\n", descriptive_stats_age_gender)
+
+# f. Draw a scatter plot for passenger fare paid by Female and Male passengers separately
+plt.scatter(df_cleaned[df_cleaned['Sex'] == 'female']['PassengerId'], df_cleaned[df_cleaned['Sex'] == 'female']['Fare'], label='Female')
+plt.scatter(df_cleaned[df_cleaned['Sex'] == 'male']['PassengerId'], df_cleaned[df_cleaned['Sex'] == 'male']['Fare'], label='Male')
+plt.xlabel('PassengerId')
+plt.ylabel('Fare')
+plt.legend()
+plt.show()
+
+# g. Compare density distribution for features age and passenger fare
+sns.kdeplot(df_cleaned['Age'], label='Age')
+sns.kdeplot(df_cleaned['Fare'], label='Fare')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.legend()
+plt.show()
+
+# h. Draw the pie chart for three groups labelled as class 1, class 2, class 3 respectively displayed in different
+# colours. The occurrence of each group converted into percentage should be displayed in the pie chart.
+class_counts = df_cleaned['Pclass'].value_counts()
+plt.pie(class_counts, labels=class_counts.index, autopct='%1.1f%%', colors=['skyblue', 'lightgreen', 'lightcoral'])
+plt.title('Distribution of Passenger Classes')
+plt.show()
+
+# i. Find % of survived passengers for each class and answer the question “Did class play a role in survival?”.
+survival_percent_by_class = (df_cleaned.groupby('Pclass')['Survived'].sum() / df_cleaned.groupby('Pclass')['PassengerId'].count()) * 100
+print("Percentage of survived passengers for each class:\n", survival_percent_by_class)
