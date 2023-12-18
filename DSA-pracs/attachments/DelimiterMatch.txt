@@ -1,0 +1,42 @@
+#include <iostream>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+bool matchDelimiter(const string &expression) 
+{
+    stack<char> delimiterStack;
+
+    for (char ch : expression) {
+        if (ch == '(' || ch == '[' || ch == '{') {
+            delimiterStack.push(ch);
+        } else if (ch == ')' || ch == ']' || ch == '}') {
+            if (delimiterStack.empty()) {
+                return false;
+            }
+            char top = delimiterStack.top();
+            delimiterStack.pop();
+            if ((ch == ')' && top != '(') || (ch == ']' && top != '[') || (ch == '}' && top != '{')) {
+                return false;
+            }
+        }
+    }
+
+    return delimiterStack.empty();
+}
+
+int main() 
+{
+    string expression;
+    cout << endl << "Enter an Expression : ";
+    cin >> expression;
+
+    if (matchDelimiter(expression)) {
+        cout << "------------------------------" << endl << "Delimiter matching is correct." << endl;
+    } else {
+        cout << "------------------------------" << endl << "Delimiter matching is incorrect." << endl;
+    }
+
+    return 0;
+}

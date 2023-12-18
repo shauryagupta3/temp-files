@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int value;
+    Node* next;
+
+    Node(int el, Node* ptr = NULL) {
+        next = ptr;
+        value = el;
+    }
+};
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() {
+        head = NULL;
+    }
+
+    bool isEmpty() {
+        return head == NULL;
+    }
+
+    void addElement(int el);
+    void deleteElement(int el);
+    void display();
+};
+
+void LinkedList::addElement(int el) {
+    if (isEmpty() || el < head->value) {
+        head = new Node(el, head);
+    } else {
+        Node* current = head;
+        while (current->next != NULL && current->next->value < el) {
+            current = current->next;
+        }
+        current->next = new Node(el, current->next);
+    }
+}
+
+void LinkedList::deleteElement(int el) {
+    if (head != NULL) {
+        if (head->next == NULL && head->value == el) {
+            delete head;
+            head = NULL;
+        } else if (head->value == el) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        } else {
+            Node* temp = head;
+            while (temp->next != NULL && temp->next->value != el) {
+                temp = temp->next;
+            }
+            if (temp == NULL) {
+                cout << "Element not found";
+            } else {
+                Node* temp2 = temp->next->next;
+                delete temp->next;
+                temp->next = temp2;
+            }
+        }
+    }
+}
+
+void LinkedList::display() {
+    Node* ptr = head;
+    while (ptr != NULL) {
+        cout << ptr->value << " ";
+        ptr = ptr->next;
+    }
+}
+
+int main(int argc, char const* argv[]) {
+    LinkedList l1;
+    l1.addElement(5);
+    l1.addElement(2);
+    l1.addElement(9);
+    l1.addElement(199);
+    l1.addElement(7);
+    
+    cout << endl;
+    l1.display();
+    cout << endl;
+
+    l1.deleteElement(7);
+    l1.deleteElement(199);
+    l1.deleteElement(2);
+
+    
+    l1.display();
+    cout << endl;
+
+    return 0;
+}

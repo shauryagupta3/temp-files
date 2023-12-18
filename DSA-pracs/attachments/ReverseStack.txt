@@ -1,0 +1,47 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+void reverse_stack(stack<int> &addr1) {
+    stack<int> stack_main;
+
+    while (!addr1.empty()) {
+        int temp = addr1.top();
+        addr1.pop();
+        stack_main.push(temp);
+    }
+
+    addr1 = stack_main;
+}
+
+int main() {
+    stack<int> numbers;
+    stack<int> newStack;
+
+    numbers.push(5);
+    numbers.push(4);
+    numbers.push(8);
+    numbers.push(2);
+
+    newStack = numbers;
+
+    cout << endl << "Original Stack : " << endl;
+    while (!numbers.empty()) 
+    {
+        cout << numbers.top() << " ";
+        numbers.pop();
+    }
+
+    reverse_stack(newStack);
+
+    cout << endl << "Reversed Stack : " << endl;
+    while (!newStack.empty()) 
+    {
+        cout << newStack.top() << " ";
+        newStack.pop();
+    }
+    cout << endl;
+
+    return 0;
+}
